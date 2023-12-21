@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^1.6.2",
     "express": "^4.18.2",
     "mongoose": "^8.0.3"
   },
@@ -7,12 +8,14 @@
   "version": "1.0.0",
   "main": "src/server.js",
   "devDependencies": {
+    "@faker-js/faker": "^8.3.1",
+    "faker": "^6.6.6",
     "nodemon": "^3.0.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon --ignore client.js src/server.js"
   },
   "author": "",
   "license": "ISC",
