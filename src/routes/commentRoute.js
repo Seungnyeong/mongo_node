@@ -57,6 +57,14 @@ commentRouter.patch("/:commentId", async (req, res) => {
   return res.send({ comment });
 });
 
+// $elemMath 두 개 모두 해당되는 것을 pull해줌.
+commentRouter.delete("/:commentId", async (req, res) => {
+  const { commentId } = req.params;
+  const comment = await Comment.findOneAndDelete({ _id: commentId });
+  await Blog.updateOne({ "comments._id": commentId }, { $pull: { comments: { _id: commentId } } });
+  return res.send({ comment });
+});
+
 module.exports = {
   commentRouter,
 };
