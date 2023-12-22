@@ -11,10 +11,10 @@ blogRouter.use("/:blogId/comment", commentRouter);
 blogRouter.post("/", async (req, res) => {
   try {
     const { title, content, islive, userId } = req.body;
-    if (typeof title !== "string") res.status(400).send({ err: "title is required" });
-    if (typeof content !== "string") res.status(400).send({ err: "islive is required" });
-    if (islive && typeof islive !== "boolean") res.status(400).send({ err: "islive must be a boolean" });
-    if (!isValidObjectId(userId)) res.status(400).send({ err: "userId is invalid" });
+    if (typeof title !== "string") return res.status(400).send({ err: "title is required" });
+    if (typeof content !== "string") return res.status(400).send({ err: "islive is required" });
+    if (islive && typeof islive !== "boolean") return res.status(400).send({ err: "islive must be a boolean" });
+    if (!isValidObjectId(userId)) return res.status(400).send({ err: "userId is invalid" });
 
     let user = await User.findById(userId);
     if (!user) res.status(400).send({ err: "user does not exist" });
@@ -30,7 +30,7 @@ blogRouter.post("/", async (req, res) => {
 
 blogRouter.get("/", async (req, res) => {
   try {
-    const blogs = await Blog.find({}).limit(10);
+    const blogs = await Blog.find({}).limit(20);
     return res.send({ blogs });
   } catch (err) {
     console.log(err);

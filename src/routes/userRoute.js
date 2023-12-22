@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const userRouter = Router();
 const mongoose = require("mongoose");
-const { User } = require("../models");
+const { User, Blog } = require("../models");
 
 userRouter.get("/", async (req, res) => {
   try {
@@ -67,7 +67,10 @@ userRouter.put("/:userId", async (req, res) => {
 
     let user = await User.findById(userId);
     if (age) user.age = age;
-    if (name) user.name = name;
+    if (name) {
+      user.name = name;
+      await Blog.updateMany({ "user._id": userId }, { "user.name": name });
+    }
     await user.save();
 
     return res.send({ user });
