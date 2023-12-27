@@ -14,7 +14,7 @@ generateFakeData = async (userCount, blogsPerUser, commentsPerUser) => {
   for (let i = 0; i < userCount; i++) {
     users.push(
       new User({
-        username: faker.internet.userName() + parseInt(Math.random() * 100),
+        username: faker.internet.userName() + parseInt(Math.random() * 1000000000),
         name: {
           first: faker.name.firstName(),
           last: faker.name.lastName(),

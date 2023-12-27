@@ -13,12 +13,7 @@ const server = async () => {
     app.use(express.json());
     app.use("/user", userRouter);
     app.use("/blog", blogRouter);
-    app.listen(3000, async () => {
-      console.log("server listening on port 3000");
-      // for (let i = 0; i < 20; i++) {
-      //   await generateFakeData(10, 1, 10);
-      // }
-    });
+    app.listen(3000, async () => {});
   } catch (err) {
     console.log(err);
   }

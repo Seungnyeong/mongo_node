@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const UserSchema = new Schema(
   {
@@ -7,7 +7,7 @@ const UserSchema = new Schema(
       first: { type: String, required: true },
       last: { type: String, required: true },
     },
-    age: Number,
+    age: { type: Number, index: true },
     email: String,
   },
   {

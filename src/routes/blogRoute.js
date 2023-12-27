@@ -30,7 +30,13 @@ blogRouter.post("/", async (req, res) => {
 
 blogRouter.get("/", async (req, res) => {
   try {
-    const blogs = await Blog.find({}).limit(20);
+    let { page } = req.query;
+    page = parseInt(page);
+
+    const blogs = await Blog.find({})
+      .sort({ updatedAt: -1 })
+      .skip(page * 3)
+      .limit(3);
     return res.send({ blogs });
   } catch (err) {
     console.log(err);
