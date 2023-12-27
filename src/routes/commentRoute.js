@@ -16,8 +16,17 @@ commentRouter.post("/", async (req, res) => {
 
     if (!blog || !user) return res.status(400).send({ err: "blog or user does not exist" });
     if (!blog.islive) return res.status(400).send({ err: "blog is not avaliable" });
-    const comment = new Comment({ content, user, userFullName: `${user.name.first} ${user.name.last}`, blog });
-    await Promise.all([comment.save(), Blog.updateOne({ _id: blogId }, { $push: { comments: comment } })]);
+    const comment = new Comment({ content, user, userFullName: `${user.name.first} ${user.name.last}`, blog: blogId }); // 그냥 블로그 객체를 넣으면 순환참조하여 무한루프 걸린다.
+    // await Promise.all([comment.save(), Blog.updateOne({ _id: blogId }, { $push: { comments: comment } })]);
+
+    // await Promise.all([comment.save(), Blog.updateOne({ _id: blogId }, { $inc: { commentsCount: 1 } })]);
+
+    blog.commentsCount++;
+    blog.comments.push(comment);
+    if (blog.commentsCount > 3) blog.comments.shift(); //내장 되는 것들을 옛날 것들을 빼서 내장해준다. 나중에 코멘트 API 를 호출해서 이전의 댓글들은 보여 주면 된다.
+
+    await Promise.all([comment.save(), blog.save()]);
+
     return res.send({ comment });
   } catch (err) {
     return res.status(400).send({ err: err.message });
@@ -25,10 +34,15 @@ commentRouter.post("/", async (req, res) => {
 });
 
 commentRouter.get("/", async (req, res) => {
+  let { page = 0 } = req.query;
+  page = parseInt(page);
   const { blogId } = req.params;
   if (!isValidObjectId(blogId)) return res.status(400).send({ err: "blogId is invalid" });
 
-  const comments = await Comment.find({ blog: blogId });
+  const comments = await Comment.find({ blog: blogId })
+    .sort({ createdAt: -1 })
+    .skip(page * 3)
+    .limit(3);
   return res.send({ comments });
 });
 

@@ -13,7 +13,8 @@ const BlogSchema = new Schema(
         last: { type: String, required: true },
       },
     },
-    comments: [CommentSchema],
+    comments: [CommentSchema], //내장하기
+    commentsCount: { type: Number, default: 0, required: true },
   },
   { timestamps: true }
 );

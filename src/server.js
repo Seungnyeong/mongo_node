@@ -13,7 +13,9 @@ const server = async () => {
     app.use(express.json());
     app.use("/user", userRouter);
     app.use("/blog", blogRouter);
-    app.listen(3000, async () => {});
+    app.listen(3000, async () => {
+      // await generateFakeData(10, 20, 10);
+    });
   } catch (err) {
     console.log(err);
   }
