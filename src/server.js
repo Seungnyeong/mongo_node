@@ -15,7 +15,7 @@ const server = async () => {
     app.use("/user", userRouter);
     app.use("/blog", blogRouter);
     app.listen(3000, async () => {
-      // await generateFakeData(10, 20, 10);
+      // await generateFakeData(10, 2, 10);
     });
   } catch (err) {
     console.log(err);
